@@ -33,16 +33,9 @@
             this.Edit = new System.Windows.Forms.Button();
             this.Delete = new System.Windows.Forms.Button();
             this.Search = new System.Windows.Forms.Button();
-            this.Search_by = new System.Windows.Forms.ComboBox();
             this.searchBox = new System.Windows.Forms.TextBox();
-            this.listView = new System.Windows.Forms.ListView();
-            this.ID = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.Title = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.Author = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.Genre = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.Number_of_copies = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.Publisher = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.Date = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.dg = new System.Windows.Forms.DataGridView();
+            ((System.ComponentModel.ISupportInitialize)(this.dg)).BeginInit();
             this.SuspendLayout();
             // 
             // Show
@@ -100,95 +93,32 @@
             this.Search.UseVisualStyleBackColor = true;
             this.Search.Click += new System.EventHandler(this.Search_Click);
             // 
-            // Search_by
-            // 
-            this.Search_by.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.Search_by.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.Search_by.FormattingEnabled = true;
-            this.Search_by.Items.AddRange(new object[] {
-            "Назвою",
-            "Автором",
-            "Жанром",
-            "Датою публікації",
-            "Видавцем"});
-            this.Search_by.Location = new System.Drawing.Point(540, 10);
-            this.Search_by.Name = "Search_by";
-            this.Search_by.Size = new System.Drawing.Size(144, 26);
-            this.Search_by.TabIndex = 5;
-            this.Search_by.Text = "За";
-            // 
             // searchBox
             // 
             this.searchBox.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.searchBox.Location = new System.Drawing.Point(690, 12);
+            this.searchBox.Location = new System.Drawing.Point(540, 12);
             this.searchBox.Name = "searchBox";
-            this.searchBox.Size = new System.Drawing.Size(214, 25);
+            this.searchBox.Size = new System.Drawing.Size(364, 25);
             this.searchBox.TabIndex = 6;
             this.searchBox.Tag = "";
+            this.searchBox.TextChanged += new System.EventHandler(this.searchBox_TextChanged);
             // 
-            // listView
+            // dg
             // 
-            this.listView.AllowDrop = true;
-            this.listView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.ID,
-            this.Title,
-            this.Author,
-            this.Genre,
-            this.Number_of_copies,
-            this.Publisher,
-            this.Date});
-            this.listView.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.listView.HideSelection = false;
-            this.listView.Location = new System.Drawing.Point(7, 42);
-            this.listView.Name = "listView";
-            this.listView.Size = new System.Drawing.Size(897, 350);
-            this.listView.TabIndex = 7;
-            this.listView.UseCompatibleStateImageBehavior = false;
-            this.listView.View = System.Windows.Forms.View.Details;
-            // 
-            // ID
-            // 
-            this.ID.Text = "ID";
-            this.ID.Width = 30;
-            // 
-            // Title
-            // 
-            this.Title.Text = "Назва";
-            this.Title.Width = 250;
-            // 
-            // Author
-            // 
-            this.Author.Text = "Автор";
-            this.Author.Width = 190;
-            // 
-            // Genre
-            // 
-            this.Genre.Text = "Жанр";
-            this.Genre.Width = 137;
-            // 
-            // Number_of_copies
-            // 
-            this.Number_of_copies.Text = "Кількість";
-            this.Number_of_copies.Width = 78;
-            // 
-            // Publisher
-            // 
-            this.Publisher.Text = "Видавець";
-            this.Publisher.Width = 200;
-            // 
-            // Date
-            // 
-            this.Date.Text = "Рік";
-            this.Date.Width = 71;
+            this.dg.BackgroundColor = System.Drawing.SystemColors.ControlLightLight;
+            this.dg.Location = new System.Drawing.Point(12, 53);
+            this.dg.Name = "dg";
+            this.dg.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.AutoSizeToAllHeaders;
+            this.dg.Size = new System.Drawing.Size(889, 339);
+            this.dg.TabIndex = 7;
             // 
             // Catalog
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(913, 404);
-            this.Controls.Add(this.listView);
+            this.Controls.Add(this.dg);
             this.Controls.Add(this.searchBox);
-            this.Controls.Add(this.Search_by);
             this.Controls.Add(this.Search);
             this.Controls.Add(this.Delete);
             this.Controls.Add(this.Edit);
@@ -201,6 +131,7 @@
             this.Text = "Каталог";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Catalog_FormClosed);
             this.Load += new System.EventHandler(this.Catalog_Load);
+            ((System.ComponentModel.ISupportInitialize)(this.dg)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -213,16 +144,8 @@
         private System.Windows.Forms.Button Edit;
         private System.Windows.Forms.Button Delete;
         private System.Windows.Forms.Button Search;
-        private System.Windows.Forms.ComboBox Search_by;
         private System.Windows.Forms.TextBox searchBox;
-        private System.Windows.Forms.ListView listView;
-        private System.Windows.Forms.ColumnHeader ID;
-        private System.Windows.Forms.ColumnHeader Title;
-        private System.Windows.Forms.ColumnHeader Author;
-        private System.Windows.Forms.ColumnHeader Genre;
-        private System.Windows.Forms.ColumnHeader Publisher;
-        private System.Windows.Forms.ColumnHeader Date;
-        private System.Windows.Forms.ColumnHeader Number_of_copies;
+        private System.Windows.Forms.DataGridView dg;
     }
 }
 

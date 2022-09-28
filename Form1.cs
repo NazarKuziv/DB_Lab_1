@@ -17,21 +17,21 @@ namespace DB_Lab_1
             
 
         }
-        
+
 
         private void Catalog_Load(object sender, EventArgs e)
         {
-            db.openConnection();      
+                
 
         }
         private void Catalog_FormClosed(object sender, FormClosedEventArgs e)
         {
-            db.closeConnection();
+            
         }
-       
+
         private void Show_Click(object sender, EventArgs e)
         {  
-                    UpdateListView();
+                UpdateListView();
 
         }
         
@@ -47,8 +47,8 @@ namespace DB_Lab_1
 
         private void Edit_Click(object sender, EventArgs e)
         {
- 
-            id = listView.SelectedItems[0].Text;
+            
+            id = dg.SelectedRows[0].Cells[0].Value.ToString();
             if (form2 == null)
                 form2 = new Form2();
             form2.Show();
@@ -58,95 +58,43 @@ namespace DB_Lab_1
 
         private void Delete_Click(object sender, EventArgs e)
         {
-            string queryString = "DELETE FROM dbo.Catalog WHERE [iD] = " + listView.SelectedItems[0].Text+";";
-            db.cmd.CommandText = queryString;
-            db.cmd.ExecuteNonQuery();
+
+            
+            db.da.DeleteCommand =new SqlCommand("DELETE FROM dbo.Catalog WHERE [iD] = @id;", db.con);
+            db.da.DeleteCommand.Parameters.Add("@id",System.Data.SqlDbType.Int).Value = dg.SelectedRows[0].Cells[0].Value.ToString();
+            db.con.Open();
+            db.da.DeleteCommand.ExecuteNonQuery();
+            db.con.Close();
             UpdateListView();
 
 
         }
         public void UpdateListView()
         {
-            listView.Items.Clear();
-            string queryString = "SELECT * FROM dbo.Catalog;";
-            db.cmd.CommandText = queryString;
-            SqlDataReader reader = db.cmd.ExecuteReader();
-            while (reader.Read())
-            {
-                ListViewItem items = new ListViewItem(reader.GetValue(0).ToString());
 
-                for (int i = 1; i < 7; i++)
-                    items.SubItems.Add(reader.GetValue(i).ToString());
+            db.ds.Clear();
+            db.da.SelectCommand = new SqlCommand("SELECT * FROM dbo.Catalog;", db.con);
+            db.da.Fill(db.ds);
+            dg.DataSource = db.ds.Tables[0];
 
-                listView.Items.Add(items);
-
-            }
-            reader.Close();
+            
         }
-        
+
         private void Search_Click(object sender, EventArgs e)
         {
-            listView.Items.Clear();
-            string queryString = "SELECT * FROM dbo.Catalog WHERE ";
-            switch (Search_by.Text)
-            {
-                case "Назвою":
-                    {
-                        queryString += "[Title] = '"+ searchBox.Text + "';";
-                        SearchBook(queryString);
-                        break;
-                    }
-                case "Автором":
-                    {
-                        queryString += "[Author] = '" + searchBox.Text + "';";
-                        SearchBook(queryString);
-                        break;
-                    }
-                case "Датою публікації":
-                    {
-                        queryString += "[Publication date] = " + searchBox.Text + ";";
-                        SearchBook(queryString);
-                        break;
-                    }
-                case "Видавцем":
-                    {
-                        queryString += "[Publisher] = '" + searchBox.Text + "';";
-                        SearchBook(queryString);
-                        break;
-                    }
-                case "Жанром":
-                    {
-                        queryString += "[Genre] = '" + searchBox.Text + "';";
-                        SearchBook(queryString);
-                        break;
-                    }
-                default:
-                    {
-                        MessageBox.Show("Введіть тараметр пошуку");
-                        break;
-                       
-                    }
+            db.ds.Clear();
+            string queryString = "SELECT * FROM dbo.Catalog WHERE [Title] = @t OR [Author] = @a;";
+            db.da.SelectCommand = new SqlCommand(queryString, db.con);
+            db.da.SelectCommand.Parameters.Add("@t",System.Data.SqlDbType.NChar).Value = searchBox.Text;
+            db.da.SelectCommand.Parameters.Add("@a", System.Data.SqlDbType.NChar).Value = searchBox.Text;
+            db.da.Fill(db.ds);
+            dg.DataSource = db.ds.Tables[0];
 
-            }
-
-           
         }
-    
-        public void SearchBook(string queryString)
+
+        private void searchBox_TextChanged(object sender, EventArgs e)
         {
-            db.cmd.CommandText = queryString;
-            SqlDataReader reader = db.cmd.ExecuteReader();
-            while (reader.Read())
-            {
-                ListViewItem items = new ListViewItem(reader.GetValue(0).ToString());
 
-                for (int i = 1; i < 7; i++)
-                    items.SubItems.Add(reader.GetValue(i).ToString());
-
-                listView.Items.Add(items);
-
-            }
-            reader.Close();
         }
     }
 }
